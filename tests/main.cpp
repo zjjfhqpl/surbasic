@@ -338,5 +338,6 @@ SD_CODE loginfunTest()
 	//uint64_t key = TokenManager::get().SetToken(token);
 
 	Request::CURL_UnInit();
+  return SD_SUCCESSED;
 }
 
