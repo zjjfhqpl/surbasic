@@ -89,6 +89,42 @@ namespace SDBasic{
 				 const string& md5pwd, 
 			 	unsigned long timeout, 
 		 		string& response);
+
+	 SD_CODE OpenAPI_CreateFolder(const AccessToken &token, 
+                                const std::string &parentid, 
+                                const std::string &name, std::string &response, 
+                                OnDupOption ondup = RENAME);
+
+	 SD_CODE OpenAPI_MoveFolder(const AccessToken &token, 
+                              const std::string &id, 
+                              const std::string &newParnetId, 
+                              std::string &response);
+
+	 SD_CODE OpenAPI_RenameFolder(const AccessToken &token, 
+                                const std::string &id, 
+                                const std::string &newName, 
+                                std::string &response);
+
+	 SD_CODE OpenAPI_DeleteFolder(const AccessToken &token, 
+                                const std::string &id, 
+                                bool recursive, 
+                                std::string &response);
+
+	 SD_CODE OpenAPI_RenameFile(const AccessToken &token, 
+                              const std::string &id, 
+                              const std::string &newName, 
+                              std::string &response,
+                              OnDupOption ondup);
+
+	 SD_CODE OpenAPI_DeleteFile(const AccessToken &token, 
+                              const std::string &id, 
+                              std::string &response);
+
+	 SD_CODE OpenAPI_MoveFile(const AccessToken &token, 
+                            const std::string &id, 
+                            const std::string &newParentId, 
+                            std::string &response);
+
 		private:
 			static	size_t g_WriteToString(void *ptr, size_t size, size_t nmemb, void *stream);
 			static size_t g_UpLoadFileV2( void *ptr, size_t size, size_t nmemb, void *stream);

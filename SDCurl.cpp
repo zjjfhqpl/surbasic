@@ -252,7 +252,7 @@ bool Request::Curl_connect(const std::string &url)
 	curl_easy_setopt ( easy_handle, CURLOPT_CONNECT_ONLY, 1L );
 	CURLcode code = curl_easy_perform ( easy_handle );
 	if ( code != CURLE_OK )
-		printf("connection failed, error code:%d",curl_easy_strerror (code));
+		printf("connection failed, error code:%s",curl_easy_strerror (code));
 	return true;
 }
 
@@ -1069,3 +1069,410 @@ SD_CODE Request::Enc_ResumeUploadFile(const AccessToken &token, const std::strin
 
 	return code;
 }
+
+SD_CODE Request::OpenAPI_CreateFolder(const AccessToken &token, 
+                                      const std::string &parentid, 
+                                      const std::string &name, std::string &response,
+                                      OnDupOption ondup)
+{
+	assert (easy_handle != NULL);
+	this->ReInit();
+
+	// url && query string
+	std::string url = "";
+  url = AppendUrl(token.resource_server ,dmvservers::openapi::v2::strFolders);	
+
+	// query string
+	std::string query;
+	APPEND_X3W_FIELD(query, "ondup", OnDupOptionStr(ondup));
+
+	// join url and query string
+	url += "?";
+	url += query;
+	AppendShareParamsToUrl(SHARE_NONE, "", &url);
+	SetUrl(url);
+
+	// oauth header
+	CurlHeaders headers;
+	headers.AddHeader("Authorization", "Bearer " + token.access_token);
+	headers.AddHeader("Content-Type", "application/json");
+	SetHttpHeaders(&headers);
+
+	// write callback
+	curl_easy_setopt(easy_handle, CURLOPT_WRITEFUNCTION, g_WriteToString);
+	curl_easy_setopt(easy_handle, CURLOPT_WRITEDATA, &response);
+
+	// json requeset body
+	Json::Value body;
+	body["name"] = name;
+	body["type"] = "folder";
+	body["parent"]["type"] = "folder";
+	body["parent"]["id"] = parentid;
+	std::string data = body.toStyledString();
+	curl_easy_setopt(easy_handle, CURLOPT_POSTFIELDS, data.c_str());
+	curl_easy_setopt(easy_handle, CURLOPT_POSTFIELDSIZE, data.length());
+
+	// perform
+	CURLcode curlcode = curl_easy_perform(easy_handle);
+
+	// return code
+	long httpcode = GetHttpCode(easy_handle);
+	SD_CODE code = err_handle_openapi(curlcode, httpcode, token.access_token, response);
+	if (code == SD_SUCCESSED)
+		return SD_SUCCESSED;
+
+	return code;
+}
+
+
+SD_CODE Request::OpenAPI_MoveFolder(const AccessToken &token, 
+                                    const std::string &id, 
+                                    const std::string &newParnetId, 
+                                    std::string &response)
+{
+  assert (easy_handle != NULL);
+  this->ReInit();
+
+  // url && query string
+  std::string url = "";
+  url = AppendUrl(token.resource_server, dmvservers::openapi::v2::strFolders) 
+      + "/" + id;
+  url += "/move";
+
+  // query string
+  std::string query;
+  APPEND_X3W_FIELD(query, "ondup", "1");
+
+  // join url and query string
+  url += "?";
+  url += query;
+  AppendShareParamsToUrl(SHARE_NONE, "", &url);
+  SetUrl(url);
+  //url+="&ondup=rename";
+
+  // oauth header
+  CurlHeaders headers;
+  headers.AddHeader("Authorization", "Bearer " + token.access_token);
+  headers.AddHeader("Content-Type", "application/json");
+  SetHttpHeaders(&headers);
+
+  // write callback
+  curl_easy_setopt(easy_handle, CURLOPT_WRITEFUNCTION, g_WriteToString);
+  curl_easy_setopt(easy_handle, CURLOPT_WRITEDATA, &response);
+
+  // json requeset body
+  Json::Value body;
+  body["type"] = "folder";
+  body["id"] = newParnetId;
+  curl_easy_setopt(easy_handle, CURLOPT_CUSTOMREQUEST, "POST");
+
+  std::string data = body.toStyledString();
+  curl_easy_setopt(easy_handle, CURLOPT_POSTFIELDS, data.c_str());
+  curl_easy_setopt(easy_handle, CURLOPT_POSTFIELDSIZE, data.length());
+
+  // perform
+  CURLcode curlcode = curl_easy_perform(easy_handle);
+
+  // return code
+  long httpcode = GetHttpCode(easy_handle);
+  SD_CODE code = err_handle_openapi(curlcode, httpcode, token.access_token, response);
+  if (code == SD_SUCCESSED)
+    return SD_SUCCESSED;
+
+  return code;
+}
+
+SD_CODE Request::OpenAPI_RenameFolder(const AccessToken &token, 
+                                      const std::string &id, 
+                                      const std::string &newName, 
+                                      std::string &response)
+{
+  assert (easy_handle != NULL);
+  this->ReInit();
+
+  // url && query string
+  std::string url = "";
+  url = AppendUrl(token.resource_server, dmvservers::openapi::v2::strFolders);	
+  url = AppendUrl(url, id);
+
+  AppendShareParamsToUrl(SHARE_NONE, "", &url); 
+  SetUrl(url);
+
+  // oauth header
+  CurlHeaders headers;
+  headers.AddHeader("Authorization", "Bearer " + token.access_token);
+  headers.AddHeader("Content-Type", "application/json");
+  SetHttpHeaders(&headers);
+
+  // write callback
+  curl_easy_setopt(easy_handle, CURLOPT_WRITEFUNCTION, g_WriteToString);
+  curl_easy_setopt(easy_handle, CURLOPT_WRITEDATA, &response);
+
+  // json requeset body
+  Json::Value body;
+  body["type"] = "folder";
+  body["name"] = newName;
+  std::string data = body.toStyledString();
+  curl_easy_setopt(easy_handle, CURLOPT_POSTFIELDS, data.c_str());
+  curl_easy_setopt(easy_handle, CURLOPT_POSTFIELDSIZE, data.length());
+  curl_easy_setopt(easy_handle, CURLOPT_CUSTOMREQUEST, "PUT");
+
+  // perform
+  CURLcode curlcode = curl_easy_perform(easy_handle);
+
+  // return code
+  long httpcode = GetHttpCode(easy_handle);
+  SD_CODE code = err_handle_openapi(curlcode, httpcode, token.access_token, response);
+  if (code == SD_SUCCESSED)
+    return SD_SUCCESSED;
+
+  return code;
+}
+
+SD_CODE Request::OpenAPI_DeleteFolder(const AccessToken &token, 
+                                      const std::string &id, 
+                                      bool recursive, 
+                                      std::string &response)
+{
+  assert (easy_handle != NULL);
+  this->ReInit();
+
+  // url && query string
+  std::string url = "";
+  url = AppendUrl(token.resource_server, dmvservers::openapi::v2::strFolders);	
+  url = AppendUrl(url, id);
+
+  std::string query;
+  APPEND_X3W_FIELD(query, "recursive", recursive?"true":"false");
+  url += "?" + query;
+  AppendShareParamsToUrl(SHARE_NONE, "", &url);
+  SetUrl(url);
+
+  // oauth header
+  CurlHeaders headers;
+  headers.AddHeader("Authorization", "Bearer " + token.access_token);
+  SetHttpHeaders(&headers);
+
+  // "DELETE" method
+  curl_easy_setopt(easy_handle, CURLOPT_CUSTOMREQUEST, "DELETE");
+
+  // write callback
+  curl_easy_setopt(easy_handle, CURLOPT_WRITEFUNCTION, g_WriteToString);
+  curl_easy_setopt(easy_handle, CURLOPT_WRITEDATA, &response);
+
+  // perform
+  CURLcode curlcode = curl_easy_perform(easy_handle);
+
+  // return code
+  long httpcode = GetHttpCode(easy_handle);
+  SD_CODE code = err_handle_openapi(curlcode, httpcode, token.access_token, response);
+  if (code == SD_SUCCESSED)
+    return SD_SUCCESSED;
+
+  switch (code) {
+    case SD_OPENAPI_NO_CONTENT:
+    case SD_OPENAPI_FILE_NOT_FOUND:
+      return SD_SUCCESSED;
+    case SD_OPENAPI_NOT_MODIFIED:
+      return SD_FAILED;
+    default:
+      break; 
+  }
+
+  return code;
+}
+
+SD_CODE Request::OpenAPI_RenameFile(const AccessToken &token, 
+                                    const std::string &id, 
+                                    const std::string &newName, 
+                                    std::string &response)
+{
+	assert (easy_handle != NULL);
+	assert (!id.empty());
+	assert (!newName.empty());
+
+	// url && query string
+	std::string url = "";
+		url = AppendUrl(token.resource_server, dmvservers::openapi::v2::strFiles) + "/" + id;
+	AppendShareParamsToUrl(SHARE_NONE, "", &url);
+	SetUrl(url);
+
+	// json body
+	Json::Value body;
+	body["name"] = newName;
+	body["type"] = "file";
+	std::string data = body.toStyledString();
+	curl_easy_setopt(easy_handle, CURLOPT_POSTFIELDS, data.c_str());
+	curl_easy_setopt(easy_handle, CURLOPT_CUSTOMREQUEST, "PUT");
+
+	// oauth header
+	CurlHeaders headers;
+	headers.AddHeader("Authorization", "Bearer " + token.access_token);
+	headers.AddHeader("Content-Type", "application/json");
+	SetHttpHeaders(&headers);
+
+	// write callback
+	curl_easy_setopt(easy_handle, CURLOPT_WRITEFUNCTION, g_WriteToString);
+	curl_easy_setopt(easy_handle, CURLOPT_WRITEDATA, &response);
+
+	// perform
+	CURLcode curlcode = curl_easy_perform(easy_handle);
+
+	// return code
+	long httpcode = GetHttpCode(easy_handle);
+	SD_CODE code = err_handle_openapi(curlcode, httpcode, token.access_token, response);
+	if (code == SD_SUCCESSED)
+		return SD_SUCCESSED;
+
+	return code;
+}
+
+SD_CODE SD_Curl::OpenAPI_ShareLink(const AccessToken &token, const std::string &id,  std::string &response)
+{
+  DEFINE_FUNC_TIMER;
+  SET_INTERFACE_NAME;
+  assert (easy_handle != NULL);
+  assert (!id.empty());
+  list<string> lstid;
+  list<string>::const_iterator iterid;
+  FileInfo::Splite(id,',',lstid);
+  assert(!lstid.empty());
+  // url
+  std::string url = AppendUrl(token.server, dmvservers::strshareDoc);
+  url += "?";
+  APPEND_X3W_FIELD(url, "account", token.account);
+  APPEND_X3W_FIELD(url, "apwd", token.md5pwd);
+  APPEND_X3W_FIELD(url, "needEncode", "false");
+  for(iterid = lstid.begin();iterid!=lstid.end();++iterid)
+  {
+    APPEND_X3W_FIELD(url, "docIds", *iterid);
+  }
+  SetUrl(url);
+  // oauth header
+  CurlHeaders headers;
+  headers.AddHeader("Authorization", "Bearer " + token.access_token);
+  SetHttpHeaders(&headers);
+
+  // write callback
+  curl_easy_setopt(easy_handle, CURLOPT_WRITEFUNCTION, g_WriteToString);
+  curl_easy_setopt(easy_handle, CURLOPT_WRITEDATA, &response);
+
+  // perform
+  CURLcode curlcode = curl_easy_perform(easy_handle);
+
+  // return code
+  long httpcode = GetHttpCode(easy_handle);
+  SD_CODE code = err_handle_openapi(curlcode, httpcode, token.access_token, response);
+  if (code == SD_SUCCESSED)
+    return SD_SUCCESSED;
+
+  return code;
+}
+
+SD_CODE Request::OpenAPI_DeleteFile(const AccessToken &token, 
+                                   const std::string &id, 
+                                   std::string &response)
+{
+  assert (easy_handle != NULL);
+  assert (!id.empty());
+
+  // url && query string
+  std::string url = "";
+  url = url = AppendUrl(token.resource_server, dmvservers::openapi::v2::strFiles);
+  url = AppendUrl(url, id);
+
+  AppendShareParamsToUrl(SHARE_NONE, "", &url);
+  SetUrl(url);
+
+  // oauth header
+  CurlHeaders headers;
+  headers.AddHeader("Authorization", "Bearer " + token.access_token);
+  SetHttpHeaders(&headers);
+
+  // "DELETE" method
+  curl_easy_setopt(easy_handle, CURLOPT_CUSTOMREQUEST, "DELETE");
+
+  // write callback
+  curl_easy_setopt(easy_handle, CURLOPT_WRITEFUNCTION, g_WriteToString);
+  curl_easy_setopt(easy_handle, CURLOPT_WRITEDATA, &response);
+
+  // perform
+  CURLcode curlcode = curl_easy_perform(easy_handle);
+
+  // return code
+  long httpcode = GetHttpCode(easy_handle);
+  SD_CODE code = err_handle_openapi(curlcode, httpcode, token.access_token, response);
+  if (code == SD_SUCCESSED)
+    return SD_SUCCESSED;
+
+  switch (code) {
+    case SD_OPENAPI_NO_CONTENT:
+    case SD_OPENAPI_FILE_NOT_FOUND:
+      return SD_SUCCESSED;
+    case SD_OPENAPI_NOT_MODIFIED:
+      return SD_FAILED;
+    default:
+      break;
+  }
+
+  return code;
+}
+
+SD_CODE Request::OpenAPI_MoveFile(const AccessToken &token, 
+                                  const std::string &id, 
+                                  const std::string &newParentId, 
+                                  std::string &response,
+                                  OnDupOption ondup)
+{
+	assert (easy_handle != NULL);
+	assert (!id.empty());
+	assert (!newParentId.empty());
+
+	// url: https://server/api/v1/files/{fileId}/copy?ifSameName=1
+	//ifSameName optional 目标目录存在同名文件时的操作方式：
+	//   1 重命名
+	//   2 替换(默认)
+	//   3 保留时间较新的文件
+
+	// url && query string
+	std::string url = "";
+  url = AppendUrl(token.resource_server, dmvservers::openapi::v2::strFiles) + "/" + id;
+  url += "/move";
+
+	std::string query;
+	APPEND_X3W_FIELD(query, "ondup", OnDupOptionStr(ondup));
+
+	url += "?";
+	url += query;
+	AppendShareParamsToUrl(SHARE_NONE, "", &url);
+	SetUrl(url);
+
+	// json body
+	Json::Value body;
+	body["id"] = newParentId;
+	body["type"] = "folder";
+	std::string data = body.toStyledString();
+	curl_easy_setopt(easy_handle, CURLOPT_POSTFIELDS, data.c_str());
+
+	// oauth header
+	CurlHeaders headers;
+	headers.AddHeader("Authorization", "Bearer " + token.access_token);
+	headers.AddHeader("Content-Type", "application/json");
+	SetHttpHeaders(&headers);
+
+	// write callback
+	curl_easy_setopt(easy_handle, CURLOPT_WRITEFUNCTION, g_WriteToString);
+	curl_easy_setopt(easy_handle, CURLOPT_WRITEDATA, &response);
+
+	// perform
+	CURLcode curlcode = curl_easy_perform(easy_handle);
+
+	// return code
+	long httpcode = GetHttpCode(easy_handle);
+	SD_CODE code = err_handle_openapi(curlcode, httpcode, token.access_token, response);
+	if (code == SD_SUCCESSED)
+		return SD_SUCCESSED;
+
+	return code;
+}
+
