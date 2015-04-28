@@ -6,12 +6,15 @@
 #include "surbasic/TreeEntity.h"
 #include "surbasic/AccessToken.h"
 #include "surbasic/TokenManager.h"
+#include "surbasic/Public_Define.h"
+
+namespace SDBasic{
 
 using namespace SDBasic::tokenmg;
 using namespace SDBasic::token;
 using namespace SDBasic::curl;
 using namespace SDBasic::tree;
-namespace SDBasic{
+using namespace SDBasic::code;
 
 void Init();
 void UnInit();
@@ -26,5 +29,21 @@ AccessToken GetToken(const uint64_t &key);
 bool Upload(const uint64_t & key,const std::string & parentid,const std::string & filepath,TreeEntity & node); 
 //id:doc id ,path:file out path
 bool Download(const uint64_t & key,const std::string & id,const std::string & path);
+
+bool RenameFile(uint64_t key, const std::string& id, const std::string& new_name,
+                TreeEntity& node);
+bool DeleteFile(uint64_t key, const std::string& id, TreeEntity& node);
+bool MoveFile(uint64_t key, const std::string& id, const std::string& new_pid,
+              TreeEntity& node);
+
+bool CreateFolder(uint64_t key, 
+                  const std::string& id, 
+                  const std::string& name,
+                  TreeEntity& node);
+bool DeleteFolder(uint64_t key,
+                  const std::string& id,
+                  bool recursive,
+                  TreeEntity& node);
+
 }//namespace
 #endif
