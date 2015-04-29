@@ -18,7 +18,12 @@ public:
   FileUploaderFactory(void);
   virtual ~FileUploaderFactory(void);
   static FileUploaderFactory& get();
-  bool  Upload(const uint64_t &key,const std::string &parentid,const std::string & filepath,TreeEntity &node);
+  bool Upload(const uint64_t & key,
+              const std::string & filepath,
+              const std::string & parentid,
+              const std::string& name,
+              Timestamp modifytime,
+              TreeEntity & node);
 private:
   static FileUploaderFactory *ins_;	
   FileUploaderEnc * uploadenc_;

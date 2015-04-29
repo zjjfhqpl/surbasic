@@ -93,8 +93,13 @@ int FileUploaderEnc::UploadFileProgress(const CurlProgressInfo &info, void *user
 	return 0;
 }
 
-SD_CODE FileUploaderEnc::UploadFileByParentId(const uint64_t &key,const std::string &fullpath, 
-		const std::string &parentid,ShareType share_type,TreeEntity &node)
+SD_CODE FileUploaderEnc::UploadFileByParentId(const uint64_t &key,
+                                              const std::string &fullpath, 
+                                              const std::string &parentid,
+                                              const std::string& name, 
+                                              Timestamp modifytime,
+                                              ShareType share_type,
+                                              TreeEntity &node)
 {
 	ByteArray   storagekey;
 	ByteArray   enckey;
@@ -113,7 +118,8 @@ SD_CODE FileUploaderEnc::UploadFileByParentId(const uint64_t &key,const std::str
 	file_.sharetype=share_type;
 	std::string tmpname = fullpath;	
 	file_.fullpath = fullpath;
-	file_.name =FileInfo::FileName(tmpname) ;	
+  file_.name = name;
+  file_.modifytime = modifytime;
 	ByteArray allhash; 
 	if (Digestor::HashFile(fullpath, HASH_ALL, allhash) == false) {
 		printf("failed to hash file: %s", file_.fullpath.c_str());

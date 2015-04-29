@@ -121,6 +121,8 @@ TEST(SurbasicOpTests, FileOperations) {
   result = SDBasic::Upload(token_key_,
                            node.id,
                            test_file_path,
+                           test_file_path,
+                           SDBasic::time::Timestamp::Now(),
                            fnode);
   DeleteFile(test_file_path);
   if (!result) {

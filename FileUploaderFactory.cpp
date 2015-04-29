@@ -16,10 +16,20 @@ FileUploaderFactory& FileUploaderFactory::get() {
   return (*ins_);
 }
 
-bool FileUploaderFactory::Upload(const uint64_t & key,const std::string & parentid,const std::string &filepath,TreeEntity & node){
-         if(uploadenc_==NULL){
-    	 uploadenc_ = new FileUploaderEnc(key,cb_);};
-	 SD_CODE code = uploadenc_->UploadFileByParentId(key,filepath,parentid,SHARE_NONE,node);
-        return (code == SD_SUCCESSED)?true:false;
+bool FileUploaderFactory::Upload(const uint64_t & key,
+                                 const std::string & filepath,
+                                 const std::string & parentid,
+                                 const std::string& name,
+                                 Timestamp modifytime,
+                                 TreeEntity & node)
+{
+  if(uploadenc_==NULL){
+    uploadenc_ = new FileUploaderEnc(key,cb_);
+  };
+
+  SD_CODE code = uploadenc_->UploadFileByParentId(
+      key, filepath, parentid, name, modifytime, SHARE_NONE, node);
+
+  return (code == SD_SUCCESSED)?true:false;
 }
 

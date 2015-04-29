@@ -224,7 +224,8 @@ uint64_t  loginPerTest()
 void uploadfactoryTest(const uint64_t &key,const std::string & file,std::string &id,TreeEntity & node)
 {
 	std::string parentid = id;//"US17AKE7";//= "CN20G7MB";
-	SDBasic::Upload(key,parentid,file,node);
+  std::string name = FileInfo::FileName(const_cast<std::string&>(file));
+	SDBasic::Upload(key,file,parentid, file, Timestamp::Now(), node);
 	  std::string tmp = "/tmp/surdoc/";
 	  tmp+=node.name;
 	  printf("downlaod file path:%s\r\n",tmp.c_str());
@@ -242,7 +243,12 @@ void uploadfileTest(const uint64_t & key,const std::string & file,std::string &i
 	TreeEntity node;
 	FileUploadCallback cb;
 	FileUploaderEnc * ptr = new FileUploaderEnc(key,cb);
-	SD_CODE ret = ptr->UploadFileByParentId(key,file,parentid,code::SHARE_NONE,node);
+
+  std::string name = FileInfo::FileName(const_cast<std::string&>(file));
+	SD_CODE ret = ptr->UploadFileByParentId(key,file,parentid,
+                                          name,
+                                          Timestamp::Now(),
+                                          code::SHARE_NONE,node);
 	if(ret == SD_SUCCESSED)
 	 {
 	  printf("upload successed\r\n");

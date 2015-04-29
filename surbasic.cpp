@@ -141,9 +141,19 @@ AccessToken GetToken(const uint64_t & key){
 return token;
 }
 
-bool Upload(const uint64_t &key,const std::string & parentid,const std::string & filepath,TreeEntity & node) 
+bool Upload(const uint64_t & key,
+            const std::string & filepath,
+            const std::string & parentid,
+            const std::string& name,
+            Timestamp modifytime,
+            TreeEntity & node)
 {
-	return FileUploaderFactory::get().Upload(key,parentid,filepath,node);
+	return FileUploaderFactory::get().Upload(key,
+                                           filepath,
+                                           parentid,
+                                           name,
+                                           modifytime,
+                                           node);
 }
 
 bool Download(const uint64_t & key,const std::string & id,const std::string & path){

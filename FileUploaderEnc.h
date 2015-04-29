@@ -84,8 +84,15 @@ class FileUploaderEnc
 public:
 	FileUploaderEnc(const uint64_t &key, FileUploadCallback cb);	
 	virtual ~FileUploaderEnc();
-	SD_CODE UploadFileByParentId(const uint64_t &key,const std::string &fullpath, 
-		const std::string &parentid,ShareType share_type,TreeEntity &node);
+
+	SD_CODE UploadFileByParentId(const uint64_t &key,
+                               const std::string &fullpath, 
+                               const std::string &parentid,
+                               const std::string& name, 
+                               Timestamp modifytime,
+                               ShareType share_type,
+                               TreeEntity &node);
+
     static int UploadFileProgress(const CurlProgressInfo &info, void *userdata);
 private:
 	static int UploadFileProgess(const CurlProgressInfo &info,void *userdata);
