@@ -37,13 +37,13 @@ bool MoveFile(uint64_t key, const std::string& id, const std::string& new_pid,
               TreeEntity& node);
 
 bool CreateFolder(uint64_t key, 
-                  const std::string& id, 
+                  const std::string& pid, 
                   const std::string& name,
                   TreeEntity& node);
-bool DeleteFolder(uint64_t key,
-                  const std::string& id,
-                  bool recursive,
-                  TreeEntity& node);
+bool DeleteFolder(uint64_t key, const std::string& id, bool recursive);
+
+bool RenameFolder(uint64_t key, const std::string& id, const std::string& new_name,
+                TreeEntity& node);
 
 }//namespace
 #endif

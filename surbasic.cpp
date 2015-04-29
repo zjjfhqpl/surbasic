@@ -150,4 +150,114 @@ bool Download(const uint64_t & key,const std::string & id,const std::string & pa
 	return FileDownloaderFactory::get().Download(key,id,path);
 }
 
+bool RenameFile(uint64_t key, const std::string& id, const std::string& new_name,
+                TreeEntity& node)
+{
+  std::string response;
+  Request curl;
+  curl.Init();
+  AccessToken token;
+  TokenManager::get().GetToken(key,token);
+  SD_CODE ret = curl.OpenAPI_RenameFile(token, id, new_name, response);
+  if(ret!=SD_SUCCESSED) {
+    return false;
+  }
+
+  CJsonParse json(response);
+  if (json.ParseNode(node) == false)
+    return false;
+  return true;
+}
+
+bool DeleteFile(uint64_t key, const std::string& id, TreeEntity& node)
+{
+  std::string response;
+  Request curl;
+  curl.Init();
+  AccessToken token;
+  TokenManager::get().GetToken(key,token);
+  SD_CODE ret = curl.OpenAPI_DeleteFile(token, id, response);
+  if(ret!=SD_SUCCESSED) {
+    return false;
+  }
+
+  CJsonParse json(response);
+  if (json.ParseNode(node) == false)
+    return false;
+  return true;
+}
+
+bool MoveFile(uint64_t key, const std::string& id, const std::string& new_pid,
+              TreeEntity& node)
+{
+  std::string response;
+  Request curl;
+  curl.Init();
+  AccessToken token;
+  TokenManager::get().GetToken(key,token);
+  SD_CODE ret = curl.OpenAPI_MoveFile(token, id, new_pid, response, OVERWRITE);
+  if(ret!=SD_SUCCESSED) {
+    return false;
+  }
+
+  CJsonParse json(response);
+  if (json.ParseNode(node) == false)
+    return false;
+  return true;
+}
+
+bool CreateFolder(uint64_t key, 
+                  const std::string& pid, 
+                  const std::string& name,
+                  TreeEntity& node)
+{
+  std::string response;
+  Request curl;
+  curl.Init();
+  AccessToken token;
+  TokenManager::get().GetToken(key,token);
+  SD_CODE ret = curl.OpenAPI_CreateFolder(token, pid, name, response);
+  if(ret!=SD_SUCCESSED) {
+    return false;
+  }
+
+  CJsonParse json(response);
+  if (json.ParseNode(node) == false)
+    return false;
+  return true;
+}
+
+bool DeleteFolder(uint64_t key,
+                  const std::string& id,
+                  bool recursive)
+{
+  std::string response;
+  Request curl;
+  curl.Init();
+  AccessToken token;
+  TokenManager::get().GetToken(key,token);
+  SD_CODE ret = curl.OpenAPI_DeleteFolder(token, id, recursive, response);
+
+  return (ret == SD_SUCCESSED);
+}
+
+bool RenameFolder(uint64_t key, const std::string& id, const std::string& new_name,
+                TreeEntity& node)
+{
+  std::string response;
+  Request curl;
+  curl.Init();
+  AccessToken token;
+  TokenManager::get().GetToken(key,token);
+  SD_CODE ret = curl.OpenAPI_RenameFolder(token, id, new_name, response);
+  if(ret!=SD_SUCCESSED) {
+    return false;
+  }
+
+  CJsonParse json(response);
+  if (json.ParseNode(node) == false)
+    return false;
+  return true;
+}
+
 }//namespace

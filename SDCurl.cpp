@@ -68,7 +68,7 @@ static const char * OnDupOptionStr(OnDupOption opt)
 
 	return names[opt];
 };
-Request::Request():enableProgLog(true),easy_handle(NULL)
+Request::Request():enableProgLog(false),easy_handle(NULL)
 {
 
 }
@@ -128,11 +128,11 @@ int Request::DoCurlProgress(double dltotal, double dlnow, double ultotal, double
 	{
 		if (ulnow != ultotal)
 		{
-		printf("CULR_PROG: D %.1lfKb/%.1lfKb/+%.1lfKb/s U %.1lfKb/%.1lfKb/+%.1lfKb/s", 
+		printf("CURL_PROG: D %.1lfKb/%.1lfKb/+%.1lfKb/s U %.1lfKb/%.1lfKb/+%.1lfKb/s", 
 				dlnow/1000, dltotal/1000, progInfo.dlspeed/1000,
 				ulnow/1000, ultotal/1000, progInfo.ulspeed/1000);
 		} else {
-		printf("CULR_PROG: D %.1lfKb/%.1lfKb/+%.1lfKb/s U %.1lfKb/%.1lfKb/done",
+		printf("CURL_PROG: D %.1lfKb/%.1lfKb/+%.1lfKb/s U %.1lfKb/%.1lfKb/done",
 				dlnow/1000, dltotal/1000, progInfo.dlspeed/1000,
 				ulnow/1000, ultotal/1000);
 		}
@@ -1327,47 +1327,6 @@ SD_CODE Request::OpenAPI_RenameFile(const AccessToken &token,
 	return code;
 }
 
-SD_CODE SD_Curl::OpenAPI_ShareLink(const AccessToken &token, const std::string &id,  std::string &response)
-{
-  DEFINE_FUNC_TIMER;
-  SET_INTERFACE_NAME;
-  assert (easy_handle != NULL);
-  assert (!id.empty());
-  list<string> lstid;
-  list<string>::const_iterator iterid;
-  FileInfo::Splite(id,',',lstid);
-  assert(!lstid.empty());
-  // url
-  std::string url = AppendUrl(token.server, dmvservers::strshareDoc);
-  url += "?";
-  APPEND_X3W_FIELD(url, "account", token.account);
-  APPEND_X3W_FIELD(url, "apwd", token.md5pwd);
-  APPEND_X3W_FIELD(url, "needEncode", "false");
-  for(iterid = lstid.begin();iterid!=lstid.end();++iterid)
-  {
-    APPEND_X3W_FIELD(url, "docIds", *iterid);
-  }
-  SetUrl(url);
-  // oauth header
-  CurlHeaders headers;
-  headers.AddHeader("Authorization", "Bearer " + token.access_token);
-  SetHttpHeaders(&headers);
-
-  // write callback
-  curl_easy_setopt(easy_handle, CURLOPT_WRITEFUNCTION, g_WriteToString);
-  curl_easy_setopt(easy_handle, CURLOPT_WRITEDATA, &response);
-
-  // perform
-  CURLcode curlcode = curl_easy_perform(easy_handle);
-
-  // return code
-  long httpcode = GetHttpCode(easy_handle);
-  SD_CODE code = err_handle_openapi(curlcode, httpcode, token.access_token, response);
-  if (code == SD_SUCCESSED)
-    return SD_SUCCESSED;
-
-  return code;
-}
 
 SD_CODE Request::OpenAPI_DeleteFile(const AccessToken &token, 
                                    const std::string &id, 

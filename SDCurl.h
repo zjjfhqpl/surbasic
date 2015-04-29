@@ -113,17 +113,17 @@ namespace SDBasic{
 	 SD_CODE OpenAPI_RenameFile(const AccessToken &token, 
                               const std::string &id, 
                               const std::string &newName, 
-                              std::string &response,
-                              OnDupOption ondup);
+                              std::string &response);
 
 	 SD_CODE OpenAPI_DeleteFile(const AccessToken &token, 
                               const std::string &id, 
                               std::string &response);
 
-	 SD_CODE OpenAPI_MoveFile(const AccessToken &token, 
+   SD_CODE OpenAPI_MoveFile(const AccessToken &token, 
                             const std::string &id, 
                             const std::string &newParentId, 
-                            std::string &response);
+                            std::string &response,
+                            OnDupOption ondup);
 
 		private:
 			static	size_t g_WriteToString(void *ptr, size_t size, size_t nmemb, void *stream);
