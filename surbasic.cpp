@@ -187,14 +187,8 @@ bool DeleteFile(uint64_t key, const std::string& id, TreeEntity& node)
   AccessToken token;
   TokenManager::get().GetToken(key,token);
   SD_CODE ret = curl.OpenAPI_DeleteFile(token, id, response);
-  if(ret!=SD_SUCCESSED) {
-    return false;
-  }
 
-  CJsonParse json(response);
-  if (json.ParseNode(node) == false)
-    return false;
-  return true;
+  return (ret == SD_SUCCESSED);
 }
 
 bool MoveFile(uint64_t key, const std::string& id, const std::string& new_pid,
