@@ -135,4 +135,6 @@ bool AesWriteFile::Finalize() {
   return true;
 }
 
+void AesWriteFile::Close() { file_->Close(); }
+
 }

@@ -41,6 +41,9 @@ class Timestamp {
   struct timeval ToTimeval() const;
   struct timespec ToTimespec() const;
 
+  time_t ToTimeT() const;
+  static Timestamp FromTimeT(time_t t);
+
   std::string ToLogTime() const;
 
   bool Valid() const { return us_since_epoch_ != -1; }

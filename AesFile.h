@@ -33,6 +33,7 @@ class AesWriteFile {
   bool Open(const std::string& path, const bytearray::ByteArray& key);
   bool Write(void* buf, size_t size, size_t* written_bytes);
   bool Finalize();
+  void Close();
 
  private:
   static const size_t kBlockSize = 4096;

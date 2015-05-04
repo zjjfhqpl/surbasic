@@ -29,6 +29,14 @@ struct timespec Timestamp::ToTimespec() const {
   return ts;
 }
 
+time_t Timestamp::ToTimeT() const {
+  return (us_since_epoch_ / kMicroSecondsPerSecond);
+}
+
+Timestamp Timestamp::FromTimeT(time_t t) {
+  return Timestamp(t * kMicroSecondsPerSecond);
+}
+
 Timestamp Timestamp::AfterNSeconds(double seconds) {
   return AfterNMicroseconds(seconds * kMicroSecondsPerSecond);
 }
