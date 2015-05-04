@@ -3,3 +3,6 @@ target_link_libraries(main_test surbasic borzoi pthread ssl jsoncpp curl)
 
 add_executable(surbasic_op_tests surbasic_op_tests.cpp)
 target_link_libraries(surbasic_op_tests gwbase surbasic borzoi pthread ssl jsoncpp curl)
+
+add_executable(aes_file_tests aes_file_tests.cpp)
+target_link_libraries(aes_file_tests gwbase surbasic borzoi pthread ssl jsoncpp curl)

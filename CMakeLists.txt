@@ -1,5 +1,6 @@
 set(surbasic_SRC
  AESHelper.cpp
+ AesFile.cpp
  Base64Helper.cpp
  ByteArray.cpp
  CJsonParse.cpp
