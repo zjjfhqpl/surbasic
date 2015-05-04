@@ -103,6 +103,7 @@ void Request::Init(){//获取curl interface 指针
 	// curl_easy_setopt(easy_handle, CURLOPT_PROXY, "10.0.1.114:8888");
 	curl_easy_setopt(easy_handle, CURLOPT_MAX_SEND_SPEED_LARGE, curl_off_t(50*1024));
 	curl_easy_setopt( easy_handle, CURLOPT_MAX_RECV_SPEED_LARGE, curl_off_t(20*1024));	
+  ::curl_easy_setopt(easy_handle, CURLOPT_NOSIGNAL, 1L);
 }
 
 int Request::g_CurlProgress(void *clientp, double dltotal, double dlnow, double ultotal, double ulnow)
