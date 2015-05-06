@@ -45,7 +45,8 @@ uint64_t  Login(const std::string & server,const std::string &user,const std::st
 
         AccessToken temp_token;
         SDContext *ctx = &CTX;
-		xml::ParseCheckAccountXml(response.c_str(),temp_token);
+		if (xml::ParseCheckAccountXml(response.c_str(),temp_token) == false)
+      return 0;
 
         printf("privatekey:%s\r\n",temp_token.privatekey.c_str());
         printf("rootid:%s\r\n",ctx->root_dir_id.c_str());

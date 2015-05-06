@@ -9,7 +9,7 @@ using namespace SDBasic::token;
 namespace SDBasic{
 namespace xml{
 
-void ParseCheckAccountXml(const char * xml,AccessToken & token);
+bool ParseCheckAccountXml(const char * xml,AccessToken & token);
 
 }}//namespace
 #endif
