@@ -149,12 +149,12 @@ bool Upload(const uint64_t & key,
             Timestamp modifytime,
             TreeEntity & node)
 {
-	return FileUploaderFactory::get().Upload(key,
-                                           filepath,
-                                           parentid,
-                                           name,
-                                           modifytime,
-                                           node);
+  FileUploaderEnc* uploader = FileUploaderFactory::get().CreateUploader(key);
+  SD_CODE ret = uploader->UploadFileByParentId(
+      key, filepath, parentid, name, modifytime, SHARE_NONE, node);
+
+  delete uploader;
+  return (ret = SD_SUCCESSED);
 }
 
 bool Download(const uint64_t & key,const std::string & id,const std::string & path){

@@ -165,12 +165,14 @@ upload_file_content:
 		file_.personalkey = GeneratePersonalKey(storagekey);
 	}
 
+  /*
 	if (file_.encFileSize >= BIG_FILE_THRESHHOLD)
 	{
 		//ret = Enc_UploadBigFile(node);
 	} else {
-		ret = Enc_UploadSmallFile(token,node);
 	}
+  */
+  ret = Enc_UploadSmallFile(token,node);
 	
 	FileInfo::Remove(file_.encFilePath);
 deal_with_return_code:	// deal with return code
