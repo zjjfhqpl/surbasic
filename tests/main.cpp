@@ -189,7 +189,9 @@ int PersonalKeyDecryptTest() {
 }
 
 void downloadfactoryTest(const uint64_t &key,const std::string &id,const std::string &path){
-	FileDownloaderFactory::get().Download(key,id,path);
+  FileDownloaderEnc* d = FileDownloaderFactory::get().CreateDownloader(key);
+	d->Download(key,id,path);
+  delete d;
 }
 void downloadTest(const uint64_t &key,const std::string & id,const std::string& path)
 {

@@ -158,7 +158,10 @@ bool Upload(const uint64_t & key,
 }
 
 bool Download(const uint64_t & key,const std::string & id,const std::string & path){
-	return FileDownloaderFactory::get().Download(key,id,path);
+  FileDownloaderEnc* d = FileDownloaderFactory::get().CreateDownloader(key);
+  SD_CODE ret = d->Download(key,id,path);
+  delete d;
+  return (ret==SD_SUCCESSED?true:false);
 }
 
 bool RenameFile(uint64_t key, const std::string& id, const std::string& new_name,

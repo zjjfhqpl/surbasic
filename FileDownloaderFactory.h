@@ -17,9 +17,10 @@ public:
 	virtual ~FileDownloaderFactory();
 	static FileDownloaderFactory & get();
 	bool Download(const uint64_t & key,const std::string & id,const std::string & path);
+
+  FileDownloaderEnc* CreateDownloader(uint64_t key);
 private:
 	static FileDownloaderFactory * ins_;
-	FileDownloaderEnc *downloadenc_;
 	FileDownloadCallback cb_;
 
 };
