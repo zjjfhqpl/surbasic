@@ -932,7 +932,8 @@ SD_CODE Request::Enc_GetResumeOffset(const AccessToken &token,  const std::strin
 	CurlHeaders headers;
 	headers.AddHeader("Authorization", "Bearer " + token.access_token);
 	headers.AddHeader("Content-Length", "0");
-	headers.AddHeader("Content-Range", NumFmt("bytes */%ld", file_size).str()); 
+	headers.AddHeader("Content-Range", NumFmt("bytes */%s", 
+                                            NumStr(file_size).c_str()).str()); 
 	SetHttpHeaders(&headers);
 
 //	 write callback
@@ -1035,8 +1036,10 @@ SD_CODE Request::Enc_ResumeUploadFile(const AccessToken &token, const std::strin
 	CurlHeaders headers;
 	headers.AddHeader("Authorization", "Bearer " + token.access_token);
 	char content_range[256];
-	snprintf(content_range, sizeof(content_range), "bytes %ld-%ld/%ld",
-		file->offset, file->encFileSize-1, file->encFileSize);
+	snprintf(content_range, sizeof(content_range), "bytes %s-%s/%s",
+		NumStr(file->offset).c_str(), 
+    NumStr(file->encFileSize-1).c_str(), 
+    NumStr(file->encFileSize).c_str());
 	headers.AddHeader("Content-Range", content_range);
 	headers.AddHeader("Content-Type", "application/octet-stream");
 	SetHttpHeaders(&headers);
