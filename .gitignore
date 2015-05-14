@@ -18,3 +18,4 @@ cscope.*
 dicom_data
 dicom_db
 core.*
+.deps
