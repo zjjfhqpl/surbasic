@@ -11,7 +11,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 set(CXX_FLAGS
     -fPIC
     -g
-    # -DVALGRIND
     -DCHECK_PTHREAD_RETURN_VALUE
     -D_FILE_OFFSET_BITS=64
     -Wall
@@ -26,7 +25,7 @@ set(CXX_FLAGS
     -Wno-shadow
     -Wwrite-strings
     -march=native
-    # -MMD
+    -Wno-unused
     -std=c++0x
     -rdynamic
     )

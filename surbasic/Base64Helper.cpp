@@ -20,7 +20,7 @@ static inline char indexToChar(unsigned int index)
 	return base64Chars[index];
 }
 
-static inline int charToIndex(unsigned char ch)
+static inline unsigned char charToIndex(unsigned char ch)
 {
 	static const unsigned char decoding[] = {
 		62,128,128,128,
@@ -37,7 +37,7 @@ static inline int charToIndex(unsigned char ch)
 	if (idx > maxIndex)
 		return 128;
 
-	return decoding[idx];
+	return (decoding[idx]);
 };
 
 std::string Base64Helper::Encode(const ByteArray &data)
@@ -56,10 +56,10 @@ std::string Base64Helper::Encode(const std::string &hexdata)
 
 bool Base64Helper::Encode(const ByteArray &data, ByteArray &out)
 {
-	unsigned int numThreeByteGroups = data.size() / 3;
-	unsigned int numRemainBytes = data.size() % 3;
+	size_t numThreeByteGroups = data.size() / 3;
+	size_t numRemainBytes = data.size() % 3;
 
-	for (unsigned i = 0; i < numThreeByteGroups; ++i)
+	for (size_t i = 0; i < numThreeByteGroups; ++i)
 	{
 		unsigned char b1 = data[i*3];
 		unsigned char b2 = data[i*3+1];
@@ -102,15 +102,15 @@ bool Base64Helper::Decode(const ByteArray &data, ByteArray &out)
 	if (data.empty() || (data.size() % 4 != 0))
 		return false;
 
-	unsigned safe = data.size();
-	unsigned remain = 0;
+	size_t safe = data.size();
+	size_t remain = 0;
 	if (data.back() == '=')
 	{
 		safe -= 4;
 		remain = 4;
 	}
 
-	for (unsigned i = 0; i < safe; i += 4)
+	for (size_t i = 0; i < safe; i += 4)
 	{
 		unsigned char b1 = charToIndex(data[i]);
 		unsigned char b2 = charToIndex(data[i+1]);
@@ -122,9 +122,9 @@ bool Base64Helper::Decode(const ByteArray &data, ByteArray &out)
 
 		unsigned int d = (b1 << 18) | (b2 << 12) | (b3 << 6) | b4;
 
-		out.push_back((d & 0xFF0000) >> 16);
-		out.push_back((d & 0xFF00) >> 8);
-		out.push_back(d & 0xFF);
+		out.push_back(static_cast<unsigned char>((d & 0xFF0000) >> 16));
+		out.push_back(static_cast<unsigned char>((d & 0xFF00) >> 8));
+		out.push_back(static_cast<unsigned char>(d & 0xFF));
 	}
 
 	if (remain > 0)
@@ -135,11 +135,12 @@ bool Base64Helper::Decode(const ByteArray &data, ByteArray &out)
 		if (b1 == 128 || b2 == 128)
 			return false;
 
-		out.push_back((b1 << 2) | (b2 >> 4));
+		out.push_back(static_cast<unsigned char>((b1 << 2) | (b2 >> 4)));
 		unsigned char b3 = charToIndex(data[safe+2]);
 		if (b3 != 128) // !'='
 		{
-			out.push_back(((b2 & 0xF) << 4) | (b3 >> 2));
+			out.push_back(static_cast<unsigned char>(
+              ((b2 & 0xF) << 4) | (b3 >> 2)));
 		}
 	}
 
