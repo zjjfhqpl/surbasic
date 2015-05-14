@@ -16,7 +16,6 @@
 #include "surbasic/FileDownloaderFactory.h"
 #include "surbasic/surbasic.h"
 #include "surbasic/DateObjects.h"
-#include "surbasic/format.h"
 
 using namespace SDBasic;
 using namespace SDBasic::FileInfo;
@@ -269,8 +268,8 @@ void fileTest()
 	 std::string str = "/home/Demo/test.c";
         FileStatus st = FileInfo::StatFile(str);
         FileStatus st1;
-        printf("%s size:%" PRIu64 " default:%" PRIu64 "\r\n",
-               str.c_str(),st.size,st1.size);
+        printf("%s size:%s default:%s\r\n",
+               str.c_str(), NumStr(st.size).c_str(), NumStr(st1.size).c_str());
 
 }
 SD_CODE loginfunTest()

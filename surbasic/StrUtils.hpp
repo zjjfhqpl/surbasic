@@ -2,8 +2,16 @@
 #define STR_UNTILS_H
 #include "Type.h"
 #include "nocopyable.hpp"
+#include <sstream>
 namespace SDBasic{
 	namespace fmt{
+    template <typename T>
+    std::string NumStr(const T& v) {
+      std::ostringstream os;
+      os << v;
+      return os.str();
+    }
+
 		class  NumFmt:public SDBasic::nocopyable
 		{
 		public:

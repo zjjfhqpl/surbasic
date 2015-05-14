@@ -8,7 +8,6 @@
 #include "surbasic/ServerErrorCode.h"
 #include "surbasic/Log.hpp"
 #include "surbasic/DmvAPI.h"
-#include "surbasic/format.h"
 
 using namespace SDBasic::curl;
 using namespace SDBasic::Utils;
@@ -694,7 +693,7 @@ SD_CODE Request::Enc_UploadSmallFile(const AccessToken &token, BackupFile &file,
 	// oauth header
 	CurlHeaders headers;
 	headers.AddHeader("Authorization", "Bearer " + token.access_token);
-	headers.AddHeader("content-filesize", NumFmt("%" PRIi64, file.size).str());
+	headers.AddHeader("content-filesize", NumStr(file.size));
 	SetHttpHeaders(&headers);
 
 	 //write callback
@@ -806,7 +805,7 @@ SD_CODE Request::Enc_DownloadFile(const AccessToken &token, const std::string &i
 	CurlHeaders headers;
 	headers.AddHeader("Authorization", "Bearer " + token.access_token);
 	if (offset > 0) {
-		headers.AddHeader("Range", NumFmt("bytes=%" PRId64 "-", offset).str());
+		headers.AddHeader("Range", NumFmt("bytes=%s-", NumStr(offset).c_str()).str());
 	}
 	if (!etag.empty())
 		headers.AddHeader("If-Match", etag);

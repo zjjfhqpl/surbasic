@@ -31,7 +31,7 @@ bool AesReadFile::ReadNextBlock() {
   }
 
   while (true) {
-    size_t cipher_bytes = 0;
+    unsigned long cipher_bytes = 0;
     if (file_->Read(buf_, kBlockSize, &cipher_bytes) == false)
       return false;
 
@@ -98,7 +98,7 @@ bool AesWriteFile::Open(const std::string& path, const bytearray::ByteArray& key
 bool AesWriteFile::Write(void* buf, size_t size, size_t* write_bytes) {
   (*write_bytes) = 0;
 
-  size_t cipher_bytes = 0;
+  unsigned long cipher_bytes = 0;
   size_t blocks = size / kBlockSize;
   size_t remain = size % kBlockSize;
 
@@ -127,7 +127,7 @@ bool AesWriteFile::Write(void* buf, size_t size, size_t* write_bytes) {
 }
 
 bool AesWriteFile::Finalize() {
-  size_t cipher_bytes = 0;
+  unsigned long cipher_bytes = 0;
   enc_->Finalize();
   if (file_->Write(enc_->data(), enc_->len(), &cipher_bytes) == false)
     return false;

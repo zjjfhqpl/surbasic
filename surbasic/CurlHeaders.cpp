@@ -2,7 +2,6 @@
 
 #include <curl/curl.h>
 #include "surbasic/StrUtils.hpp"
-#include "surbasic/format.h"
 
 namespace SDBasic{
 namespace headers{
@@ -27,12 +26,12 @@ CurlHeaders::~CurlHeaders()
 
 void CurlHeaders::AddHeader(const char *name,uint64_t val)
 {
-	AddHeader(name, NumFmt("%" PRIu64, val).str());
+	AddHeader(name, NumStr(val));
 }
 
 void CurlHeaders::AddHeader(const char *name,const long val)
 {
-	AddHeader(name, NumFmt("%ld", val).str());
+	AddHeader(name, NumStr(val));
 }
 
 void CurlHeaders::AddHeader(const char *name, const std::string &val)
@@ -65,7 +64,7 @@ void CurlHttpPost::AddTextField(const char *name, const std::string &val)
 
 void CurlHttpPost::AddTextField(const char *name, uint64_t val)
 {
-	AddTextField(name, TrimSpace(NumFmt("%" PRIu64, val).str()));
+	AddTextField(name, NumStr(val));
 }
 
 void CurlHttpPost::AddFileField(const char *name, const std::string &filename, const std::string &path)

@@ -1,8 +1,9 @@
 #include"CJsonParse.h"
 #include "surbasic/Type.h"
-#include "surbasic/format.h"
+#include "surbasic/StrUtils.hpp"
 
 using namespace SDBasic::json;
+using namespace SDBasic::fmt;
 using namespace SDBasic;
 
 int GetJsonInt(const Json::Value& _jsValue)
@@ -88,7 +89,7 @@ bool CJsonParse::GetUserSpaceInfo(UserSpaceInfo &info)
 			info.singleNonFileSize = GetJsonlonglong(val["singleNonFileSize"]);
 			info.usedSpace = GetJsonlonglong(val["usedSpace"]);
 			if (info.usedSpace < 0){
-			printf("server return negative usedSpace %" PRId64, info.usedSpace);
+			printf("server return negative usedSpace %s", NumStr(info.usedSpace).c_str());
 			info.usedSpace = 0;}
 			info.creator = GetJsonString(val["creator"]);
 			info.regTime = Timestamp::FromISO8601(GetJsonString(val["regTime"]));
