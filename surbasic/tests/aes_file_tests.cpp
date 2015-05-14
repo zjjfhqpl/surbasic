@@ -1,4 +1,3 @@
-#include <gwbase/base/test_harness.h>
 #include <gwbase/base/util.h>
 #include <gwbase/base/random.h>
 #include <surbasic/Digestor.h>
@@ -118,28 +117,34 @@ class AesFileTests {
   bytearray::ByteArray key_;
 };
 
-TEST(AesFileTests, ReadStreamTests) {
-  ReadTest(0, 1); 
-  ReadTest(1, 1); 
-  ReadTest(128, 128); 
-  ReadTest(4096, 1); 
-  ReadTest(4096, 4096); 
-  ReadTest(4097, 4096); 
-  ReadTest(10000, 4096); 
+class ReadStreamTests: public AesFileTests {
+ public:
+  void RunTests() {
+    ReadTest(0, 1); 
+    ReadTest(1, 1); 
+    ReadTest(128, 128); 
+    ReadTest(4096, 1); 
+    ReadTest(4096, 4096); 
+    ReadTest(4097, 4096); 
+    ReadTest(10000, 4096); 
+  }
 }
 
-TEST(AesFileTests, WriteStreamTests) {
-  WriteTest(0, 1); 
-  WriteTest(1, 1); 
-  WriteTest(128, 128); 
-  WriteTest(4096, 1); 
-  WriteTest(4096, 4096); 
-  WriteTest(4097, 4096); 
-  WriteTest(10000, 4096); 
+class WriteStreamTests: public AesFileTests {
+ public:
+  void RunTests() {
+    WriteTest(0, 1); 
+    WriteTest(1, 1); 
+    WriteTest(128, 128); 
+    WriteTest(4096, 1); 
+    WriteTest(4096, 4096); 
+    WriteTest(4097, 4096); 
+    WriteTest(10000, 4096); 
+  }
 }
-
 
 int main()
 {
-  dicom::RunAllTests();
+  ReadStreamTests t1;
+  t1.RunTests();
 }

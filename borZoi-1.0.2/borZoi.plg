@@ -1,0 +1,35 @@
+<html>
+<body>
+<pre>
+<h1>ﾋﾞﾙﾄﾞのﾛｸﾞ</h1>
+<h3>
+--------------------構成: borZoi - Win32 Release--------------------
+</h3>
+<h3>ｺﾏﾝﾄﾞ ﾗｲﾝ</h3>
+一時ﾌｧｲﾙ "C:\DOCUME~1\anthony\LOCALS~1\Temp\RSP82.tmp" を作成し、次の内容を記録します
+[
+/nologo /ML /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /D "USE_MPI" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\cygwin\home\anthony\crypto\borZoi-0.9.3\src\mpi.c"
+]
+Creating command line "cl.exe @C:\DOCUME~1\anthony\LOCALS~1\Temp\RSP82.tmp" 
+<h3>ｱｳﾄﾌﾟｯﾄ ｳｨﾝﾄﾞｳ</h3>
+ｺﾝﾊﾟｲﾙ中...
+mpi.c
+C:\cygwin\home\anthony\crypto\borZoi-0.9.3\src\mpi.c(2687) : warning C4018: '<' : signed と unsigned の数値を比較しようとしました。
+C:\cygwin\home\anthony\crypto\borZoi-0.9.3\src\mpi.c(613) : warning C4761: 関数の仮引数と実引数のﾍﾞｰｽ型が異なっています。実引数を仮引数の型に変換します。
+C:\cygwin\home\anthony\crypto\borZoi-0.9.3\src\mpi.c(1893) : warning C4761: 関数の仮引数と実引数のﾍﾞｰｽ型が異なっています。実引数を仮引数の型に変換します。
+C:\cygwin\home\anthony\crypto\borZoi-0.9.3\src\mpi.c(2351) : warning C4761: 関数の仮引数と実引数のﾍﾞｰｽ型が異なっています。実引数を仮引数の型に変換します。
+C:\cygwin\home\anthony\crypto\borZoi-0.9.3\src\mpi.c(2353) : warning C4761: 関数の仮引数と実引数のﾍﾞｰｽ型が異なっています。実引数を仮引数の型に変換します。
+C:\cygwin\home\anthony\crypto\borZoi-0.9.3\src\mpi.c(3493) : warning C4761: 関数の仮引数と実引数のﾍﾞｰｽ型が異なっています。実引数を仮引数の型に変換します。
+C:\cygwin\home\anthony\crypto\borZoi-0.9.3\src\mpi.c(3596) : warning C4761: 関数の仮引数と実引数のﾍﾞｰｽ型が異なっています。実引数を仮引数の型に変換します。
+C:\cygwin\home\anthony\crypto\borZoi-0.9.3\src\mpi.c(3600) : warning C4761: 関数の仮引数と実引数のﾍﾞｰｽ型が異なっています。実引数を仮引数の型に変換します。
+C:\cygwin\home\anthony\crypto\borZoi-0.9.3\src\mpi.c(4052) : warning C4761: 関数の仮引数と実引数のﾍﾞｰｽ型が異なっています。実引数を仮引数の型に変換します。
+C:\cygwin\home\anthony\crypto\borZoi-0.9.3\src\mpi.c(4056) : warning C4761: 関数の仮引数と実引数のﾍﾞｰｽ型が異なっています。実引数を仮引数の型に変換します。
+
+
+
+<h3>結果</h3>
+mpi.obj - ｴﾗｰ 0、警告 10
+</pre>
+</body>
+</html>

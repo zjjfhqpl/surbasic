@@ -1,0 +1,28 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "borZoi", "borZoi.vcproj", "{198E6716-9E77-4102-B8A6-46F0E1C8C362}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "borZoi_test", "borZoi_test.vcproj", "{502EA684-EFF5-42B6-AE3B-4B6BEC6475EE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{198E6716-9E77-4102-B8A6-46F0E1C8C362} = {198E6716-9E77-4102-B8A6-46F0E1C8C362}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{198E6716-9E77-4102-B8A6-46F0E1C8C362}.Debug|Win32.ActiveCfg = Debug|Win32
+		{198E6716-9E77-4102-B8A6-46F0E1C8C362}.Debug|Win32.Build.0 = Debug|Win32
+		{198E6716-9E77-4102-B8A6-46F0E1C8C362}.Release|Win32.ActiveCfg = Release|Win32
+		{198E6716-9E77-4102-B8A6-46F0E1C8C362}.Release|Win32.Build.0 = Release|Win32
+		{502EA684-EFF5-42B6-AE3B-4B6BEC6475EE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{502EA684-EFF5-42B6-AE3B-4B6BEC6475EE}.Debug|Win32.Build.0 = Debug|Win32
+		{502EA684-EFF5-42B6-AE3B-4B6BEC6475EE}.Release|Win32.ActiveCfg = Release|Win32
+		{502EA684-EFF5-42B6-AE3B-4B6BEC6475EE}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

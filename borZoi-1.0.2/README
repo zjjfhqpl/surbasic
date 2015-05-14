@@ -1,0 +1,109 @@
+      borZoi - An Elliptic Curve Cryptography Library - version 0.9.0
+      ---------------------------------------------------------------
+                     Copyright (C) 2001 Anthony Mulcahy
+
+
+License
+-------
+borZoi is an Elliptic Curve Cryptography Library distributed under the 
+terms of the GNU General Public License (GPL) (see the COPYING file for
+more details).
+ The rijndael-fst.c and rijndael-fst.h files are taken from the public 
+domain optimized Rijndael (AES) implementation written by Vincent Rijmen,
+Antoon Bosselaers and Paulo Barreto.
+ The mpi.c and mpi.h files are taken from the MPI public domain arbitrary
+precision signed integer arithmetic library written by Michael J. Fromberger.
+
+
+Technical Details
+-----------------
+borZoi implements the following algorithms using elliptic curves defined
+over finite fields of characteristic 2 (GF2m):
+
+* ECDSA (Elliptic Curve Digital Signature Algorithm)
+  As specified in ANSI X9.62, FIPS 186-2 and IEEE P1363.
+
+* ECIES (Elliptic Curve Integrated Encryption Scheme)
+  As specified in ANSI X9.63 and the IEEE P1363a Draft.
+
+* Elliptic Curve Diffie-Hellman Key Agreement Scheme
+  As specified in ANSI X9.63 and IEEE P1363.
+
+The AES symmetric encryption scheme and SHA-1 hash algorithm are also 
+supported:
+
+* AES (Rijndael) symmetric encryption scheme
+  As specified in the NIST AES draft.
+
+* SHA-1 hash algorithm
+  As specified in FIPS 180-1.
+
+
+Installation
+------------
+borZoi can be built using either an internal math library or Victor Shoup's
+NTL number theory library which provides better performance. If NTL is used,
+it must be first downloaded from http://www.shoup.net and installed.
+
+GNU Development Tools:
+1) (If NTL is not installed) ./configure
+   (If NTL is installed)     ./configure --enable-ntl
+2) make
+3) make install
+
+Microsoft Visual C++ 6:
+1) Open the workspace file in Microsoft Visual C++
+   1.1) (Only if NTL is installed)
+	Replace the USE_MPI preprocessor definition with USE_NTL in the 
+	preprocessor definitions section of the C/C++ tab of the Project 
+	Settings dialog box.
+   1.2) (Only if NTL is installed)
+	Delete the math_mpi.cpp file from the source files list and replace 
+	it with the math_ntl.cpp file.
+2) Build.
+
+
+Microsoft Visual Studio.net:
+1) Open the solution file in Microsoft Visual Studio .net
+   1.1) (Only if NTL is installed)
+	Replace the USE_MPI preprocessor definition with USE_NTL in the 
+	preprocessor definitions section of the C/C++ tab of the Project 
+	Settings dialog box.
+   1.2) (Only if NTL is installed)
+	Delete the math_mpi.cpp file from the source files list and replace 
+	it with the math_ntl.cpp file.
+2) Build.
+
+
+Usage
+-----
+Please refer to the manual (borZoi.pdf or borZoi.ps)
+
+
+Future Development
+------------------
+Only bug fixes and changes required for compatibility with cryptographic 
+standards will be added between now and the 1.0.0 release.
+
+
+Comments and Bug Reports
+------------------------
+We welcome any comments or bug reports which you may have, however please 
+note that we cannot accept any patches for legal reasons, because the borZoi 
+code is also used in our commercial products. Please send bug reports and 
+comments to borzoi@dragongate-technologies.com
+
+
+Commercial Support
+------------------
+Commercial support and cryptographic consulting is also available, for 
+details please send mail to sales@dragongate-technologies.com
+
+
+Acknowledgements
+----------------
+Thanks to John Moses for identifying a securiy problem in the KDF2
+function.
+Thanks to Takako, for all her support and encouragement.
+
+

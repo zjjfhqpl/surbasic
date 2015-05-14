@@ -1,0 +1,25 @@
+                             Installation
+                             ------------
+
+borZoi can be built using either an internal math library or Victor Shoup's
+NTL number theory library which provides better performance. If NTL is used,
+it must be first downloaded from http://www.shoup.net and installed.
+
+GNU Development Tools:
+1) (If NTL is not installed) ./configure
+   (If NTL is installed)     ./configure --enable-ntl
+2) make
+3) make install
+
+Microsoft Visual C++:
+1) Open the borZoi.dsw file in Microsoft Visual C++
+   1.1) (Only if NTL is installed)
+	Replace the USE_MPI preprocessor definition with USE_NTL in the 
+	preprocessor definitions section of the C/C++ tab of the Project 
+	Settings dialog box.
+   1.2) (Only if NTL is installed)
+	Delete the math_mpi.cpp file from the source files list and replace 
+	it with the math_ntl.cpp file.
+2) Build.
+
+
