@@ -1,0 +1,53 @@
+
+let NERDTreeIgnore=['\.o$', '\.ko$', '\.symvers$', '\.order$', '\.mod.c$', '\.swp$', '\.bak$', '\~$', '\.la', '\.in', '\.lo', '\.o', '\.cdepn', '\.lo', '\.gch']
+
+let NERDTreeSortOrder=['\/$', 'Makefile', 'makefile', '*', '\~$']
+let NERDTreeMinimalUI=1
+let NERDTreeQuitOnOpen=0
+let NERDTreeWinPos = 'right'
+let NERDTreeWinSize = 31
+autocmd VimEnter * NERDTree
+wincmd w
+" move cursor from NERDTree to file
+autocmd VimEnter * wincmd w 
+
+set gdbprg=gdb
+
+let g:ctrlp_match_window = 'top'
+
+set makeprg=make\ -C\ ../build\ -j
+" set makeprg=make\ -C\ build\ -j
+
+" autocmd VimEnter * edit ./api/examples/glfsxmp.c
+" autocmd VimEnter * split
+"
+au! BufEnter *.cc let b:fswitchdst = 'h' | let b:fswitchlocs="."
+au! BufEnter *.h let b:fswitchdst = 'cc,cpp'
+
+" donot consider -> . as word sepatator, so we can use <cword> to select 
+" a->b, or a.b
+" set iskeyword+=45,46,62
+set tabstop=8
+
+function! NERDTreeCustomIgnoreFilter(path)
+    return a:path.isExecutable
+endfunction
+
+set path+=.
+set path+=src/
+set path+=src/include
+set path+=/usr/include
+set path+=/usr/local/include
+set path+=contrib/spark
+set path+=contrib/mongoose
+set path+=contrib/borZoi-1.0.2/src
+set path+=../linux_gateway_version_1.0.0.1/Cplusplus
+set path+=../linux_gateway_version_1.0.0.1
+set path+=../onion/src
+set path+=../onion/src/bindings/cpp
+
+if filereadable(".NERDTreeBookmarks")
+    let g:NERDTreeBookmarksFile = ".NERDTreeBookmarks"
+endif
+
+set directory=.tmp
